@@ -50,7 +50,7 @@ data class Estudiante(
      */
     fun guardar(newUuid: String? = null) {
         if (newUuid !== null) ref().child(newUuid).setValue(data)
-        if (uuid !== null) ref().child(uuid!!).setValue(data)
+        else if (uuid !== null) ref().child(uuid!!).setValue(data)
         else ref().push().setValue(data)
     }
 }
