@@ -1,24 +1,33 @@
 package edu.udb.dsm.investigacion_practica.screens
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Button
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Text
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -29,11 +38,11 @@ import edu.udb.dsm.investigacion_practica.R
 import edu.udb.dsm.investigacion_practica.entities.Estudiante
 import edu.udb.dsm.investigacion_practica.entities.EstudianteData
 
+
 @Composable
 fun PantallaListaEstudiantes(navController: NavHostController) {
     val estudiantes = remember { mutableStateListOf<Estudiante>() }
 
-    // Obtener los estudiantes desde Firebase al cargar la pantalla
     LaunchedEffect(Unit) {
         estudiantes.addAll(Estudiante.listar())
     }
@@ -58,26 +67,53 @@ fun ListaEstudiantes(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
     ) {
-        Button(onClick = {
-            // hacia la pantalla de agregar estudiante
-            onNavigate("formulario_estudiante")
-        }) {
-            Text("Agregar Estudiante")
-        }
+
+        Image(
+            painter = painterResource(id = R.drawable.logo),
+            contentDescription = "Imagen de cabecera",
+            modifier = Modifier
+                .size(180.dp)
+                .padding(top = 16.dp),
+            contentScale = ContentScale.Crop
+        )
 
         Text(
-            stringResource(R.string.estudiantes_lista),
-            fontSize = 20.sp,
-            lineHeight = 3.em,
+            text = "Estudiantes Actuales",
+            fontSize = 24.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(top = 16.dp)
         )
+
+
+        Text(
+            text = "Escuela de Ingeniería",
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Medium,
+            color = MaterialTheme.colorScheme.primary,
+            modifier = Modifier.padding(bottom = 16.dp)
+        )
+
+
+        Button(
+            onClick = { onNavigate("formulario_estudiante") },
+            modifier = Modifier.padding(bottom = 16.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Default.Add,
+                contentDescription = "Agregar"
+            )
+            Text(text = "Agregar Estudiante", modifier = Modifier.padding(start = 8.dp))
+        }
 
         LazyColumn {
             items(estudiantes) { estudiante ->
                 HorizontalDivider()
-                ElementoEstudiante(estudiante.data, modifier = Modifier.clickable {
-                    //hacia la pantalla de formulario
-                    onNavigate(estudiante.uuid)
-                })
+                ElementoEstudiante(
+                    estudiante.data,
+                    modifier = Modifier.clickable {
+                        onNavigate(estudiante.uuid)
+                    }
+                )
             }
         }
     }
@@ -98,11 +134,7 @@ fun ElementoEstudiante(
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
-                text = stringResource(
-                    R.string.estudiante_identidad,
-                    estudiante.carnet ?: "(sin carnet)",
-                    estudiante.nombre ?: "(sin nombre)",
-                ),
+                text = "${estudiante.nombre ?: ""} (${estudiante.carnet ?: "sin carnet"})",
                 style = MaterialTheme.typography.titleLarge,
                 color = MaterialTheme.colorScheme.onSurface
             )
@@ -110,18 +142,20 @@ fun ElementoEstudiante(
                 text = stringResource(
                     R.string.estudiante_contactos,
                     estudiante.telefono ?: "(sin telefono)",
-                    estudiante.email ?: "(sin correo)",
+                    estudiante.email ?: "(sin correo)"
                 ),
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
             Text(
-                text = stringResource(R.string.estudiante_plan, estudiante.plan ?: "(sin plan)"),
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.primary
+                text = stringResource(
+                    R.string.estudiante_plan,
+                    estudiante.plan ?: "(sin plan)"
+                ),
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
     }
 }
-
 

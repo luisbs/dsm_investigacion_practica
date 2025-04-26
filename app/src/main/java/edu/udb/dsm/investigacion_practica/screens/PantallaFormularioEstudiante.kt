@@ -6,19 +6,22 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import edu.udb.dsm.investigacion_practica.entities.Estudiante
 import edu.udb.dsm.investigacion_practica.entities.EstudianteData
-import androidx.compose.ui.text.font.FontWeight
 
-@OptIn(ExperimentalMaterial3Api::class) // <- Esto activa el uso de APIs experimentales
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PantallaFormularioEstudiante(navController: NavHostController, uid: String?) {
     val nombre = remember { mutableStateOf(TextFieldValue()) }
@@ -30,7 +33,6 @@ fun PantallaFormularioEstudiante(navController: NavHostController, uid: String?)
     val planOptions = listOf("2017", "2023")
     var expanded by remember { mutableStateOf(false) }
 
-    // Cargar datos si hay UID
     LaunchedEffect(Unit) {
         if (uid.isNullOrEmpty()) return@LaunchedEffect
         Estudiante.obtener(uid)?.data?.let {
@@ -74,7 +76,6 @@ fun PantallaFormularioEstudiante(navController: NavHostController, uid: String?)
                     CampoTexto(label = "Nombre", valor = nombre.value) { nombre.value = it }
                     CampoTexto(label = "Carnet", valor = carnet.value) { carnet.value = it }
 
-                    // Dropdown para "Plan"
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -141,9 +142,40 @@ fun PantallaFormularioEstudiante(navController: NavHostController, uid: String?)
                             Estudiante(data, uid).guardar()
                             navController.popBackStack()
                         },
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.primary,
+                            contentColor = Color.White
+                        )
                     ) {
+                        Icon(
+                            imageVector = Icons.Filled.Check,
+                            contentDescription = "Guardar",
+                            modifier = Modifier.size(20.dp)
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
                         Text("Guardar")
+                    }
+
+                    if (!uid.isNullOrEmpty()) {
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        Button(
+                            onClick = { /* pueden agregar el codigo para eliminar aqui */ },
+                            modifier = Modifier.fillMaxWidth(),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color(0xFFB00020),
+                                contentColor = Color.White
+                            )
+                        ) {
+                            Icon(
+                                imageVector = Icons.Filled.Close,
+                                contentDescription = "Borrar",
+                                modifier = Modifier.size(20.dp)
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text("Borrar")
+                        }
                     }
                 }
             }
@@ -172,4 +204,3 @@ fun CampoTexto(label: String, valor: TextFieldValue, onValueChange: (TextFieldVa
         )
     )
 }
-
