@@ -1,5 +1,6 @@
 package edu.udb.dsm.investigacion_practica.entities
 
+import com.google.android.gms.tasks.Task
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.tasks.await
@@ -38,9 +39,9 @@ data class Estudiante(
         }
 
         /** Eliminar un Estudiante usando su UID */
-//        fun eliminar(uid: String): Task<Void> {
-//            return ref().child(uid).removeValue()
-//        }
+        fun eliminar(uid: String): Task<Void> {
+            return ref().child(uid).removeValue()
+        }
     }
 
     /**

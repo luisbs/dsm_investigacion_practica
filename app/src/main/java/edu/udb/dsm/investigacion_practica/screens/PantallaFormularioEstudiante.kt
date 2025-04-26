@@ -3,10 +3,14 @@ package edu.udb.dsm.investigacion_practica.screens
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -87,6 +91,26 @@ fun PantallaFormularioEstudiante(navController: NavHostController, uid: String?)
             navController.popBackStack()
         }) {
             Text("Guardar")
+        }
+
+        //si esta editando, muestra el boton de eliminar verficando "uid"
+        // Codigo para borrar cuando se esta editando
+        if (!uid.isNullOrEmpty()) {
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Button(
+                onClick = {
+                    Estudiante.eliminar(uid)
+                        .addOnSuccessListener {
+                            navController.popBackStack()
+                        }
+                },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.error
+                )
+            ) {
+                Text("Eliminar")
+            }
         }
     }
 }

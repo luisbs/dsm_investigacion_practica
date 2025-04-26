@@ -57,6 +57,9 @@ fun ListaEstudiantes(
     ) {
         Button(onClick = {
             // hacia la pantalla de agregar estudiante
+            //*********************************************
+            //Aqui borre e ingrese registro y trunco
+            //********************************************
             onNavigate("formulario_estudiante")
         }) {
             Text("Agregar Estudiante")
