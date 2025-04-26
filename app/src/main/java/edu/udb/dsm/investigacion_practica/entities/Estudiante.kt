@@ -14,7 +14,7 @@ data class EstudianteData(
 
 data class Estudiante(
     var data: EstudianteData,
-    var uuid: String?,
+    var uuid: String? = null,
 ) {
     companion object {
         fun ref(): DatabaseReference {
@@ -47,8 +47,9 @@ data class Estudiante(
      * Insertar al Estudiante en la base de datos.
      * Si un UID es proveido los datos del Estudiante seran actualizados.
      */
-//    fun guardar(uid: String? = null): Task<Void> {
-//        return if (uid !== null) ref().child(uid).setValue(this)
-//        else ref().push().setValue(this)
-//    }
+    fun guardar(newUuid: String? = null) {
+        if (newUuid !== null) ref().child(newUuid).setValue(data)
+        if (uuid !== null) ref().child(uuid!!).setValue(data)
+        else ref().push().setValue(data)
+    }
 }

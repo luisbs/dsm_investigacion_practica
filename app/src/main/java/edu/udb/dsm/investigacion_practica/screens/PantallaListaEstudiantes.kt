@@ -49,9 +49,8 @@ fun PantallaListaEstudiantes(navController: NavHostController) {
 fun ListaEstudiantes(
     estudiantes: List<Estudiante>,
     onNavigate: (uid: String?) -> Unit,
-    modifier: Modifier = Modifier,
-
-    ) {
+    modifier: Modifier = Modifier
+) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
