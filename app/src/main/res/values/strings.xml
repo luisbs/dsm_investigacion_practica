@@ -1,6 +1,13 @@
 <resources>
     <string name="app_name">DSM Investigacion Practica</string>
+    <string name="estudiantes_lista">Estudiantes actuales</string>
 
     <string name="estudiante_nombre">Nombre: %1$s</string>
     <string name="estudiante_carnet">Carnet: %1$s</string>
+    <string name="estudiante_plan">Plan: %1$s</string>
+    <string name="estudiante_email">Email: %1$s</string>
+    <string name="estudiante_telefono">Telefono: %1$s</string>
+
+    <string name="estudiante_identidad">(%1$s) %2$s</string>
+    <string name="estudiante_contactos">Contactos: %1$s - %2$s</string>
 </resources>

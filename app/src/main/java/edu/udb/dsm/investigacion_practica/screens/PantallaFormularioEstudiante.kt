@@ -20,6 +20,7 @@ import edu.udb.dsm.investigacion_practica.entities.Estudiante
 
 
 import androidx.navigation.NavHostController
+import edu.udb.dsm.investigacion_practica.entities.EstudianteData
 
 @Composable
 fun PantallaFormularioEstudiante(navController: NavHostController, uid: String?) {
@@ -33,8 +34,7 @@ fun PantallaFormularioEstudiante(navController: NavHostController, uid: String?)
     if (!uid.isNullOrEmpty()) {
         val dbRef = FirebaseDatabase.getInstance().getReference("estudiantes").child(uid)
         dbRef.get().addOnSuccessListener { snapshot ->
-            val estudiante = snapshot.getValue(Estudiante::class.java)
-            estudiante?.let {
+            snapshot.getValue(Estudiante::class.java)?.data?.let {
                 nombre.value = TextFieldValue(it.nombre ?: "")
                 carnet.value = TextFieldValue(it.carnet ?: "")
                 plan.value = TextFieldValue(it.plan ?: "")
@@ -56,7 +56,7 @@ fun PantallaFormularioEstudiante(navController: NavHostController, uid: String?)
 
         Button(onClick = {
             // Crear o actualizar el estudiante
-            val estudiante = Estudiante(
+            val estudiante = EstudianteData(
                 nombre = nombre.value.text,
                 carnet = carnet.value.text,
                 plan = plan.value.text,
