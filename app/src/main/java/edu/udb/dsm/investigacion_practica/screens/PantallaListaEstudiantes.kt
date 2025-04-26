@@ -10,6 +10,9 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Button
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateListOf
@@ -85,28 +88,39 @@ fun ElementoEstudiante(
     estudiante: EstudianteData,
     modifier: Modifier = Modifier
 ) {
-    Column(modifier = modifier.padding(all = 16.dp)) {
-        Text(
-            stringResource(
-                R.string.estudiante_identidad,
-                estudiante.carnet ?: "(sin carnet)",
-                estudiante.nombre ?: "(sin nombre)",
-            ),
-            fontWeight = FontWeight.Bold,
-            fontSize = 16.sp,
-        )
-        Text(
-            stringResource(
-                R.string.estudiante_contactos,
-                estudiante.telefono ?: "(sin telefono)",
-                estudiante.email ?: "(sin correo)",
-            ),
-            fontSize = 12.sp,
-        )
-        Text(
-            stringResource(R.string.estudiante_plan, estudiante.plan ?: "(sin plan)"),
-            fontSize = 12.sp,
-        )
+    Card(
+        modifier = modifier
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant
+        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Text(
+                text = stringResource(
+                    R.string.estudiante_identidad,
+                    estudiante.carnet ?: "(sin carnet)",
+                    estudiante.nombre ?: "(sin nombre)",
+                ),
+                style = MaterialTheme.typography.titleLarge,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+            Text(
+                text = stringResource(
+                    R.string.estudiante_contactos,
+                    estudiante.telefono ?: "(sin telefono)",
+                    estudiante.email ?: "(sin correo)",
+                ),
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            Text(
+                text = stringResource(R.string.estudiante_plan, estudiante.plan ?: "(sin plan)"),
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.primary
+            )
+        }
     }
 }
 
