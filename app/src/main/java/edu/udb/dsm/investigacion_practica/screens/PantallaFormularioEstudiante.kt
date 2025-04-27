@@ -1,5 +1,6 @@
 package edu.udb.dsm.investigacion_practica.screens
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -10,6 +11,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
@@ -21,6 +23,8 @@ import edu.udb.dsm.investigacion_practica.entities.EstudianteData
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PantallaFormularioEstudiante(navController: NavHostController, uid: String?) {
+    val context = LocalContext.current
+
     val nombre = remember { mutableStateOf(TextFieldValue()) }
     val carnet = remember { mutableStateOf(TextFieldValue()) }
     val plan = remember { mutableStateOf("") }
@@ -120,6 +124,33 @@ fun PantallaFormularioEstudiante(navController: NavHostController, uid: String?)
 
                     Button(
                         onClick = {
+                            if (nombre.value.text.isBlank()) {
+                                Toast.makeText(context, "❌ El nombre no puede estar vacío", Toast.LENGTH_SHORT).show()
+                                return@Button
+                            }
+                            if (carnet.value.text.isBlank()||
+                                carnet.value.text.length != 8) {
+                                Toast.makeText(context, "❌ El carnet no puede estar vacío y deben ser 8 caracteres", Toast.LENGTH_SHORT).show()
+                                return@Button
+                            }
+                            if (plan.value.isBlank()) {
+                                Toast.makeText(context, "❌ Debes seleccionar un plan", Toast.LENGTH_SHORT).show()
+                                return@Button
+                            }
+                            if (email.value.text.isBlank() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email.value.text).matches()) {
+                                Toast.makeText(context, "❌ Email inválido", Toast.LENGTH_SHORT).show()
+                                return@Button
+                            }
+                            if (telefono.value.text.isBlank() ||
+                                telefono.value.text.length != 8 ||
+                                !telefono.value.text.all { it.isDigit() }) {
+
+                                Toast.makeText(context, "❌ Teléfono inválido deben ser 8 digitos", Toast.LENGTH_SHORT).show()
+                                return@Button
+                            }
+
+
+
                             val data = EstudianteData(
                                 nombre = nombre.value.text,
                                 carnet = carnet.value.text,
@@ -145,27 +176,16 @@ fun PantallaFormularioEstudiante(navController: NavHostController, uid: String?)
 
                     //si esta editando, muestra el boton de eliminar verficando "uid"
                     // Codigo para borrar cuando se esta editando
-                    if (!uid.isNullOrEmpty()) {
-                        Spacer(modifier = Modifier.height(8.dp))
 
-                        Button(
-                            onClick = {
-                                Estudiante.eliminar(uid).addOnSuccessListener {
-                                        navController.popBackStack()
-                                    }
-                            }, colors = ButtonDefaults.buttonColors(
-                                containerColor = MaterialTheme.colorScheme.error
-                            )
-                        ) {
-                            Text("Eliminar")
-                        }
-                    }
 
                     if (!uid.isNullOrEmpty()) {
                         Spacer(modifier = Modifier.height(8.dp))
 
                         Button(
-                            onClick = { /* pueden agregar el codigo para eliminar aqui */ },
+                            onClick = {  Estudiante.eliminar(uid).addOnSuccessListener {
+                                navController.popBackStack()
+                            }
+                                      },
                             modifier = Modifier.fillMaxWidth(),
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = Color(0xFFB00020),
