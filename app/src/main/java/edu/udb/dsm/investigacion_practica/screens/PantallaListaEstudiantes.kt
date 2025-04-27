@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Button
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
@@ -25,6 +24,7 @@ import androidx.navigation.NavHostController
 import edu.udb.dsm.investigacion_practica.R
 import edu.udb.dsm.investigacion_practica.entities.Estudiante
 import edu.udb.dsm.investigacion_practica.entities.EstudianteData
+import edu.udb.dsm.investigacion_practica.ui.nav.NavRoutes
 
 @Composable
 fun PantallaListaEstudiantes(navController: NavHostController) {
@@ -37,10 +37,7 @@ fun PantallaListaEstudiantes(navController: NavHostController) {
 
     ListaEstudiantes(
         estudiantes,
-        onNavigate = { uid ->
-            val param = uid.let { "?uid=${uid}" }
-            navController.navigate("formulario_estudiante${param}")
-        },
+        onNavigate = { navController.navigate("${NavRoutes.FormularioEstudiante}?uid=${it}") },
         modifier = Modifier.fillMaxSize()
     )
 }
@@ -55,13 +52,7 @@ fun ListaEstudiantes(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
     ) {
-        Button(onClick = {
-            // hacia la pantalla de agregar estudiante
-            //*********************************************
-            //Aqui borre e ingrese registro y trunco
-            //********************************************
-            onNavigate("formulario_estudiante")
-        }) {
+        Button(onClick = { onNavigate(null) }) {
             Text("Agregar Estudiante")
         }
 
@@ -74,10 +65,10 @@ fun ListaEstudiantes(
         LazyColumn {
             items(estudiantes) { estudiante ->
                 HorizontalDivider()
-                ElementoEstudiante(estudiante.data, modifier = Modifier.clickable {
-                    //hacia la pantalla de formulario
-                    onNavigate(estudiante.uuid)
-                })
+                ElementoEstudiante(
+                    estudiante.data,
+                    modifier = Modifier.clickable { onNavigate(estudiante.uuid) }
+                )
             }
         }
     }

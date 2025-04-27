@@ -1,13 +1,10 @@
 package edu.udb.dsm.investigacion_practica.screens
 
-import android.util.Log
-import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -19,15 +16,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.TextFieldValue
-import com.google.firebase.database.FirebaseDatabase
-import edu.udb.dsm.investigacion_practica.entities.Estudiante
-
-
 import androidx.navigation.NavHostController
+import edu.udb.dsm.investigacion_practica.entities.Estudiante
 import edu.udb.dsm.investigacion_practica.entities.EstudianteData
-import kotlinx.coroutines.runBlocking
 
 @Composable
 fun PantallaFormularioEstudiante(navController: NavHostController, uid: String?) {
@@ -39,7 +31,7 @@ fun PantallaFormularioEstudiante(navController: NavHostController, uid: String?)
 
     // Obtener los datos del estudiante desde Firebase al cargar la pantalla
     LaunchedEffect(Unit) {
-        if (uid === null || uid.isEmpty()) return@LaunchedEffect
+        if (uid.isNullOrBlank()) return@LaunchedEffect
         Estudiante.obtener(uid)?.data?.let {
             nombre.value = TextFieldValue(it.nombre ?: "")
             carnet.value = TextFieldValue(it.carnet ?: "")

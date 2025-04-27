@@ -23,13 +23,16 @@ data class Estudiante(
         }
 
         suspend fun listar(): List<Estudiante> {
-            val result = mutableListOf<Estudiante>()
-            ref().get().await().children.map { child ->
+            val snapshot = ref().get().await()
+            if (!snapshot.hasChildren()) return listOf()
+
+            val estudiantes = mutableListOf<Estudiante>()
+            snapshot.children.forEach { child ->
                 child.getValue(EstudianteData::class.java)?.let {
-                    result.add(Estudiante(it, child.key))
+                    estudiantes.add(Estudiante(it, child.key))
                 }
             }
-            return result
+            return estudiantes
         }
 
         /** Recuperar un Estudiante usando su UID */
